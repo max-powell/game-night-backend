@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  validates :username, presence: true, uniqueness: true
+
   has_many :friendships, dependent: :destroy
   has_many :friends, through: :friendships
 
