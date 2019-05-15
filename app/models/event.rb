@@ -6,4 +6,8 @@ class Event < ApplicationRecord
   has_many :attendances, dependent: :destroy
   has_many :attendees, through: :attendances, source: :user
 
+  def host
+    self.attendances.find_by(host:true).user
+  end
+
 end
