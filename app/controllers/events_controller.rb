@@ -5,6 +5,16 @@ class EventsController < ApplicationController
     render json: user.events
   end
 
+  def create
+    event = Event.create(event_params)
+    if event.valid?
+      Attendance.create(user_id: params[:user_id], event_id: event.id, host: true)
+      render json: event
+    else
+      render json: {error: event.errors.full_messages}
+    end
+  end
+
   private
 
   def event_params
