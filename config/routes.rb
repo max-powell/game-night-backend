@@ -4,8 +4,5 @@ Rails.application.routes.draw do
     resources :events, only: :index
     get '/friends', to: 'user#friends'
   end
-  # resources :attendances
-  # resources :events
-  # resources :ownerships
-  # resources :friendships
+
 end
