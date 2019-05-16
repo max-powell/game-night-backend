@@ -2,8 +2,7 @@ class UsersController < ApplicationController
   skip_before_action :authorised, only: :create
 
   def show
-    user = User.find(params[:id])
-    render json: user
+    render json: current_user, status:accepted
   end
 
   def create
