@@ -1,5 +1,6 @@
 class User < ApplicationRecord
-  validates :username, presence: true, uniqueness: true
+  has_secure_password
+  validates :username, presence: true, uniqueness: {case_sensitive: false}
 
   has_many :friendships, dependent: :destroy
   has_many :friends, through: :friendships
