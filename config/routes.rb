@@ -6,6 +6,9 @@ Rails.application.routes.draw do
 
   get '/login', to: 'auth#create'
   get '/profile', to: 'users#profile'
+
   post '/friends', to: 'friends#add_friend'
+
+  get '/users/search'
 
 end

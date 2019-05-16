@@ -15,14 +15,15 @@ class UsersController < ApplicationController
     end
   end
 
-  def friends
-    render json: current_user.friends
+  def search
+    users = User.where('username ILIKE ?', user_params[:search_term])
+    render json: users
   end
 
   private
 
   def user_params
-    params.require(:user).permit(:username, :password, :avatar_url)
+    params.require(:user).permit(:username, :password, :avatar_url, :search_term)
   end
 
 end
