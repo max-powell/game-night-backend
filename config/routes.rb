@@ -5,7 +5,6 @@ Rails.application.routes.draw do
   end
 
   get '/login', to: 'auth#create'
-  get '/profile', to: 'users#profile'
 
   resources :games, only: :update
 
