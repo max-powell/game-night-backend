@@ -15,10 +15,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def friends
-    render json: current_user.friends
-  end
-
   private
 
   def user_params
