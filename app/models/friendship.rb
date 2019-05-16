@@ -1,7 +1,6 @@
 class Friendship < ApplicationRecord
   validate :friend_not_self
-  validates :user, presence: true
-  validates :friend, presence: true, uniqueness: {scope: :user}
+  validates :friend, uniqueness: {scope: :user}
 
   after_create :create_reciprocal_friendship
   after_destroy :destroy_reciprocal_friendship
