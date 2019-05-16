@@ -1,21 +1,12 @@
 class GamesController < ApplicationController
 
   def index
-    user = User.find(params[:user_id])
-    render json: user.games
+    render json: current_user.games
   end
 
   def create
     game = Game.where(name: game_params[:name]).first_or_create(game_params)
-    user = User.find(params[:user_id])
-    game.owners << user
-    render json: game
-  end
-
-  def update
-    game = Game.find(params[:id])
-    byebug
-    game.update(game_params)
+    current_user.games << game
     render json: game
   end
 

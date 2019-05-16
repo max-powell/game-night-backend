@@ -16,8 +16,7 @@ class UsersController < ApplicationController
   end
 
   def friends
-    user = User.find(params[:id])
-    render json: user.friends
+    render json: current_user.friends
   end
 
   private

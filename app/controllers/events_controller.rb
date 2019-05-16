@@ -1,14 +1,13 @@
 class EventsController < ApplicationController
 
   def index
-    user = User.find(params[:user_id])
-    render json: user.events
+    render json: current_user.events
   end
 
   def create
     event = Event.create(event_params)
     if event.valid?
-      Attendance.create(user_id: params[:user_id], event_id: event.id, host: true)
+      event.host = current_user
       render json: event
     else
       render json: {error: event.errors.full_messages}
