@@ -1,5 +1,5 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :username, :avatar_url, :game_count, :friends
+  attributes :id, :username, :avatar_url, :game_count, :friend_count
 
   def game_count
     object.games.count
