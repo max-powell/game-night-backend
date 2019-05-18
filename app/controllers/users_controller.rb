@@ -16,14 +16,14 @@ class UsersController < ApplicationController
   end
 
   def search
-    users = User.where('username ILIKE ?', user_params[:search_term])
+    users = User.where('username ILIKE ?', params[:query])
     render json: users
   end
 
   private
 
   def user_params
-    params.require(:user).permit(:username, :password, :avatar_url, :search_term)
+    params.require(:user).permit(:username, :password, :avatar_url, :query)
   end
 
 end

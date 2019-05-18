@@ -9,6 +9,6 @@ Rails.application.routes.draw do
 
   post '/friends', to: 'friends#add_friend'
 
-  get '/users/search'
+  get 'search/:query', to: 'users#search'
 
 end
