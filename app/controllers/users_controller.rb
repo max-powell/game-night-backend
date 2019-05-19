@@ -17,7 +17,7 @@ class UsersController < ApplicationController
 
   def search
     users = User.where('username ILIKE ?', "%#{params[:query]}%")
-    render json: users
+    render json: users.reject{|u| u == current_user}
   end
 
   private
