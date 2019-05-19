@@ -10,10 +10,15 @@ class GamesController < ApplicationController
     render json: game
   end
 
+  def user_games
+    user = User.find(params[:user_id])
+    render json: user.games
+  end
+
   private
 
   def game_params
-    params.require(:game).permit(:name, :min_players, :max_players, :min_playtime, :max_playtime, :description, :image_url, owner_ids: [])
+    params.require(:game).permit(:name, :min_players, :max_players, :min_playtime, :max_playtime, :description, :image_url)
   end
 
 end
