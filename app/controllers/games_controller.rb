@@ -25,7 +25,7 @@ class GamesController < ApplicationController
   end
 
   def create
-    game = Game.where(name: game_params[:name]).first_or_create(game_params)
+    game = Game.where(bga_id: game_params[:bga_id]).first_or_create(game_params)
     current_user.games << game
     render json: game
   end
@@ -38,7 +38,7 @@ class GamesController < ApplicationController
   private
 
   def game_params
-    params.require(:game).permit(:name, :min_players, :max_players, :min_playtime, :max_playtime, :description, :image_url)
+    params.require(:game).permit(:name, :min_players, :max_players, :min_playtime, :max_playtime, :description, :image_url, :bga_id)
   end
 
 end
