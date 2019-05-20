@@ -13,4 +13,6 @@ Rails.application.routes.draw do
 
   get 'search/:query', to: 'users#search'
 
+  get 'games/search/:query', to: 'games#search'
+
 end
