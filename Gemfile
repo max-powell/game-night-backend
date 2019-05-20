@@ -50,4 +50,4 @@ gem "jwt", "~> 2.1"
 
 gem "olive_branch", "~> 2.1"
 
-gem 'rest-client', '~> 1.8'
+gem 'rest-client', '~> 2.0'
