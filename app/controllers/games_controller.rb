@@ -15,6 +15,10 @@ class GamesController < ApplicationController
     render json: user.games
   end
 
+  def search
+
+  end
+
   private
 
   def game_params
