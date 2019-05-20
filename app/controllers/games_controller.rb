@@ -9,6 +9,7 @@ class GamesController < ApplicationController
       results = JSON.parse(res)['games'][0..14].map do |r|
         {
           name: r['name'],
+          bga_id: r['id'],
           min_players: r['min_players'],
           max_players: r['max_players'],
           min_playtime: r['min_playtime'],
