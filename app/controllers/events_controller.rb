@@ -11,7 +11,7 @@ class EventsController < ApplicationController
       event.host = current_user
       render json: event
     else
-      render json: {error: 'Please complete all fields to create an event'}
+      render json: {error: event.errors.full_messages}
     end
   end
 
