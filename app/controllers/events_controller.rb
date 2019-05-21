@@ -1,7 +1,8 @@
 class EventsController < ApplicationController
 
   def index
-    render json: current_user.events
+    events = current_user.events.reject{|e| Time.parse(e.date_time) < Time.now }.sort{|a, b| Time.parse(a.date_time) <=> Time.parse(b.date_time)}
+    render json: events
   end
 
   def create
