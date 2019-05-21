@@ -1,7 +1,8 @@
 class EventsController < ApplicationController
 
   def index
-    render json: current_user.events
+    events = current_user.events.reject{|e| Time.parse(e.date_time) < Time.now }.sort{|a, b| Time.parse(a.date_time) <=> Time.parse(b.date_time)}
+    render json: events
   end
 
   def create
@@ -10,7 +11,7 @@ class EventsController < ApplicationController
       event.host = current_user
       render json: event
     else
-      render json: {error: event.errors.full_messages}
+      render json: {error: 'Please complete all fields to create an event'}
     end
   end
 
