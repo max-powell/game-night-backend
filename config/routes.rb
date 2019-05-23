@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :friend_requests
   resources :users, only: [:create, :update]
   resources :games, only: [:index, :create]
   resources :events, only: [:index, :create]
