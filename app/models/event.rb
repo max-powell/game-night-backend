@@ -17,7 +17,8 @@ class Event < ApplicationRecord
   end
 
   def host=(user)
-    Attendance.create(user_id: user.id, event_id: self.id, host: true)
+    self.attendees << user
+    self.attendances.find(user_id: user.id).update(host: true)
   end
 
 end
