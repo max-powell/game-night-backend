@@ -2,7 +2,11 @@ class Event < ApplicationRecord
   validates :game_id, presence: true
   validates :location, presence: true
   validates :date_time, presence: true
-  validate :must_have_attendees
+  validates :pending_attendees, presence:
+    {message: ->(object, data) do
+      "You must invite someone to the event"
+    end
+  }
 
   belongs_to :game, optional: true
 
@@ -11,12 +15,6 @@ class Event < ApplicationRecord
 
   has_many :event_invites, dependent: :destroy
   has_many :pending_attendees, through: :event_invites, source: :user
-
-  def must_have_attendees
-    if attendee_ids.length == 0
-      errors.add(:attendees, "can't be blank")
-    end
-  end
 
   def host
     self.attendances.find_by(host:true).user
