@@ -1,8 +1,14 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :username, :avatar_url, :friend_requests, :event_invites
+  attributes :id, :username, :avatar_url, :friend_requests, :event_invites, :events
   has_many :games
   has_many :friends, serializer: FriendSerializer
-  has_many :events, serializer: InviteEventSummarySerializer
+
+  def events
+    events = object.events.reject{|e| Time.parse(e.date_time) < Time.now }.sort{|a, b| Time.parse(a.date_time) <=> Time.parse(b.date_time)}
+    events.map do |e|
+      ActiveModelSerializers::SerializableResource.new(e, {serializer: InviteEventSummarySerializer})
+    end
+  end
 
   def friend_requests
     FriendRequest.where(friend: object).map do |r|
