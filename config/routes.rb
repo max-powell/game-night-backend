@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :games, only: [:index, :create]
   resources :events, only: [:index, :create]
   resources :friends, only: :index
+  resources :friend_requests, except: [:show, :new, :edit]
 
   post '/login', to: 'auth#create'
   get '/profile', to: 'users#profile'
