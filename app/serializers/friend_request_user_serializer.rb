@@ -1,3 +1,3 @@
 class FriendRequestUserSerializer < ActiveModel::Serializer
-  attributes :id, :username
+  attributes :id, :username, :avatar_url
 end
