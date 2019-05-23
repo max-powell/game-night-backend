@@ -1,5 +1,9 @@
 class EventInvitesController < ApplicationController
-  before_action :set_event_invite, except: :create
+  before_action :set_event_invite, only: [:update, :destroy]
+
+  def index
+    render json: current_user.event_invites
+  end
 
   def create
     event_invite = EventInvite.create(user_id: event_invite_params[:user_id], event_id: event_invite_params[:event_id])
