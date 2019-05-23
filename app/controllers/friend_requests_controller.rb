@@ -1,5 +1,5 @@
 class FriendRequestsController < ApplicationController
-  before_action :set_request, only: [:update, :destroy]
+  before_action :set_friend_request, only: [:update, :destroy]
 
   def index
     incoming = FriendRequest.where(friend: current_user)
@@ -16,12 +16,13 @@ class FriendRequestsController < ApplicationController
   end
 
   def update
-    request.accept
-    render json: request.friend
+    @friend_request.accept
+    render json: @friend_request.friend
   end
 
   def destroy
-    friend_request.destroy
+    @friend_request.destroy
+    render json: {message: 'Friend request declined'}
   end
 
   private
@@ -30,8 +31,8 @@ class FriendRequestsController < ApplicationController
     params.require(:friend_request).permit(:friend_id)
   end
 
-  def set_request
-    request = FriendRequest.find(params[:id])
+  def set_friend_request
+    @friend_request = FriendRequest.find(params[:id])
   end
 
 end

@@ -6,7 +6,7 @@ class FriendRequest < ApplicationRecord
   belongs_to :friend,  class_name: 'User'
 
   def accept
-    user.friends << friend
+    self.user.friends << self.friend
     destroy
   end
 
