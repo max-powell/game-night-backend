@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :events, only: [:index, :create]
   resources :friends, only: :index
   resources :friend_requests, except: [:show, :new, :edit]
+  resources :event_invites, only: [:index, :create, :update, :destroy]
 
   post '/login', to: 'auth#create'
   get '/profile', to: 'users#profile'
