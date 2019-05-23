@@ -5,7 +5,7 @@ class UserSerializer < ActiveModel::Serializer
   has_many :events, serializer: InviteEventSummarySerializer
 
   def friend_requests
-    FriendRequest.where(friend: current_user).map do |r|
+    FriendRequest.where(friend: object).map do |r|
       ActiveModelSerializers::SerializableResource.new(r, {serializer: FriendRequestSerializer})
     end
   end
