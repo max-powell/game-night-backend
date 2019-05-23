@@ -1,12 +1,19 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :username, :avatar_url, :game_count, :friend_count
+  attributes :id, :username, :avatar_url, :friend_requests, :event_invites
+  has_many :games
+  has_many :friends, serializer: FriendSerializer
+  has_many :events, serializer: InviteEventSummarySerializer
 
-  def game_count
-    object.games.count
+  def friend_requests
+    FriendRequest.where(friend: current_user).map do |r|
+      ActiveModelSerializers::SerializableResource.new(r, {serializer: FriendRequestSerializer})
+    end
   end
 
-  def friend_count
-    object.friends.count
+  def event_invites
+    object.event_invites.map do |i|
+      ActiveModelSerializers::SerializableResource.new(i, {serializer: EventInviteSerializer})
+    end
   end
 
 end
