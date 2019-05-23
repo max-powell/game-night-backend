@@ -9,6 +9,9 @@ class Event < ApplicationRecord
   has_many :attendances, dependent: :destroy
   has_many :attendees, through: :attendances, source: :user
 
+  has_many :event_invites, dependent: :destroy
+  has_many :pending_attendees, through: :event_invites, source: :user
+
   def must_have_attendees
     if attendee_ids.length == 0
       errors.add(:attendees, "can't be blank")

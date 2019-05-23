@@ -13,4 +13,7 @@ class User < ApplicationRecord
 
   has_many :attendances, dependent: :destroy
   has_many :events, through: :attendances
+
+  has_many :event_invites, dependent: :destroy
+  has_many :pending_events, through: :event_invites, source: :event
 end
