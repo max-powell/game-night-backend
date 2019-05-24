@@ -16,7 +16,7 @@ class EventInvitesController < ApplicationController
 
   def update
     @event_invite.accept
-    render json: InviteEventSummarySerializer.new(@event_invite.event) 
+    render json: ActiveModelSerializers::SerializableResource.new(@event_invite.event, {serializer: InviteEventSummarySerializer}).as_json
   end
 
   def destroy
