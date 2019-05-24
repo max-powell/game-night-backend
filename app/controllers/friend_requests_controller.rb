@@ -16,8 +16,9 @@ class FriendRequestsController < ApplicationController
   end
 
   def update
+    friend = @friend_request.user
     @friend_request.accept
-    render json: @friend_request.friend
+    render json: ActiveModelSerializers::SerializableResource.new(friend, {serializer: FriendSerializer}).as_json
   end
 
   def destroy

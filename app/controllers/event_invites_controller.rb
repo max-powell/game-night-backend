@@ -16,7 +16,7 @@ class EventInvitesController < ApplicationController
 
   def update
     @event_invite.accept
-    render json: @event_invite.event
+    render json: InviteEventSummarySerializer.new(@event_invite.event) 
   end
 
   def destroy
