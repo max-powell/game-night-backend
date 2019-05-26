@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 2019_05_26_143248) do
   create_table "mechanics", force: :cascade do |t|
     t.string "name"
     t.string "bga_id"
-    t.string "agg_score", default: "0"
+    t.integer "agg_score", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

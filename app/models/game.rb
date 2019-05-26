@@ -6,4 +6,8 @@ class Game < ApplicationRecord
 
   has_many :game_mechanics, dependent: :destroy
   has_many :mechanics, through: :game_mechanics
+
+  def agg_score
+    self.mechanics.sum(&:agg_score)
+  end
 end

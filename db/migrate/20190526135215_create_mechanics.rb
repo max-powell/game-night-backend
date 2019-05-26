@@ -3,7 +3,7 @@ class CreateMechanics < ActiveRecord::Migration[5.2]
     create_table :mechanics do |t|
       t.string :name
       t.string :bga_id
-      t.string :agg_score, default: 0
+      t.integer :agg_score, default: 0
 
       t.timestamps
     end

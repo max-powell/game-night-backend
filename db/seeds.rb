@@ -12,6 +12,13 @@ def change_score(names, new_score)
   end
 end
 
+minus_two = 'Cooperative
+Cooperative Play
+D6 RPG
+Role Playing
+Social Deduction
+Storytelling'
+
 minus_one = 'Betting
 Comodity Speculation
 Deck Building
@@ -54,6 +61,8 @@ Take That
 Voting
 Wargame'
 
-# change_score(minus_one.split("\n"), -1)
-# change_score(plus_one.split("\n"), 1)
-# change_score(plus_two.split("\n"), 2)
+Mechanic.find_by_name('Party Game').update(agg_score: -3)
+change_score(minus_two.split("\n"), -2)
+change_score(minus_one.split("\n"), -1)
+change_score(plus_one.split("\n"), 1)
+change_score(plus_two.split("\n"), 2)
