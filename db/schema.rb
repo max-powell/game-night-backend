@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_26_135215) do
+ActiveRecord::Schema.define(version: 2019_05_26_143248) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,15 @@ ActiveRecord::Schema.define(version: 2019_05_26_135215) do
     t.index ["user_id"], name: "index_friendships_on_user_id"
   end
 
+  create_table "game_mechanics", force: :cascade do |t|
+    t.bigint "game_id"
+    t.bigint "mechanic_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_game_mechanics_on_game_id"
+    t.index ["mechanic_id"], name: "index_game_mechanics_on_mechanic_id"
+  end
+
   create_table "games", force: :cascade do |t|
     t.string "name"
     t.integer "min_players", default: 0
@@ -105,6 +114,8 @@ ActiveRecord::Schema.define(version: 2019_05_26_135215) do
   add_foreign_key "event_invites", "events"
   add_foreign_key "event_invites", "users"
   add_foreign_key "events", "games"
+  add_foreign_key "game_mechanics", "games"
+  add_foreign_key "game_mechanics", "mechanics"
   add_foreign_key "ownerships", "games"
   add_foreign_key "ownerships", "users"
 end
