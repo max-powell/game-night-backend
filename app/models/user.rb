@@ -16,4 +16,8 @@ class User < ApplicationRecord
 
   has_many :event_invites, dependent: :destroy
   has_many :pending_events, through: :event_invites, source: :event
+
+  def agg_score
+    self.games.sum(&:agg_score).to_f/self.games.count
+  end
 end
