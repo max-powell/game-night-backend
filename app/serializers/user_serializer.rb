@@ -2,6 +2,7 @@ class UserSerializer < ActiveModel::Serializer
   attributes :id, :username, :avatar_url, :friend_requests, :event_invites, :events
   has_many :games
   has_many :friends, serializer: FriendSerializer
+  has_many :pending_friends, serializer: FriendSerializer
 
   def events
     events = object.events.reject{|e| Time.parse(e.date_time) < Time.now }.sort{|a, b| Time.parse(a.date_time) <=> Time.parse(b.date_time)}
