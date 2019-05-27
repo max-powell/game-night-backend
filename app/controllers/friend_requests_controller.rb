@@ -9,7 +9,7 @@ class FriendRequestsController < ApplicationController
   def create
     request = current_user.friend_requests.create(friend_id: friend_request_params[:friend_id])
     if request.valid?
-      render json: ActiveModelSerializers::SerializableResource.new(request.friend, {serializer: FriendSerializer}).as_json
+      render json: ActiveModelSerializers::SerializableResource.new(request, {serializer: PendingFriendsSerializer}).as_json
     else
       render json: {error: request.errors.full_messages}
     end
