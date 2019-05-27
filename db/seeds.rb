@@ -78,12 +78,19 @@
 #   doc.css('h4').each {|n| usernames << n.content}
 # end
 
-usernames = ["Ultrascorpion", "WabiSabi3", "cysi4k", "Burning Skull1", "corbinmontego", "charlesj", "Matmanmoos", "Sasquatch101", "cixelyn2", "battlegame", "hachidan", "Mikey23", "Fizberry144", "WebKill", "lazy_coder", "Thanie30", "Biskoto1", "cannan", "tasermonkey", "ykimmate14", "NickNotChuck", "drea.s3", "heathbarATL191", "Clutch365", "strig", "MxGamma82", "toby_miller", "pororo2134", "zombiemaster", "Vysetron240", "marinero_mfp", "andersonhall", "Hoeke", "dickywinsome", "kmanisles7", "Neilan141", "beardgoggles", "jasonday5626", "BROLAK16", "protect3f", "CurtisVorley", "alchemental", "dustinos", "R0land1199231", "shelbyt23921", "johnstonbl01", "monkeydelaney", "dstrawyer28", "remaat98", "Fuzzwah2", "cocoluva3", "jocelyn_kerbourch", "Fabimier22",  "raenerl46", "derekduff37", "Two Robots7", "Shekinah53", "beardgoggles300034", "cmr6117", "Scottyos", "trentellingsen19,980", "mineral245", "conzar4", "majohnny67", "ChaosMoss125", "MaxBodelier32", "june881019", "Meeple2", "lsteinwi", "hojoos1", "Djoyner2", "funhillgames1", "KonradMikula", "EmilyWan", "tyclone3", "de-games2", "NaughtRobot43", "flingram1", "BradansWorld201528", "David Lancashire3", "bearguy3", "SandoSaito8", "sunshinesan19", "laian21", "philryuh444", "nathbot", "Wis274", "Robertcompton490", "Jcagno", "artome", "aganerral6", "1nf1n1ty696", "MogMadness", "tallon.simmons117", "petersch", "elfosardo", "ThatJimGuy", "joidan", "MixedCompanyGames2", "Nicole7"]
+usernames = ["WebKill", "lazy_coder", "Thanie", "Biskoto", "cannan", "tasermonkey", "ykimmate14", "NickNotChuck", "drea.s", "heathbarATL", "Clutch365", "strig", "MxGamma", "toby_miller", "pororo2", "zombiemaster", "Vysetron", "andersonhall", "Hoeke", "dickywinsome", "kmanisles", "Neilan", "beardgoggles", "jasonday", "BROLAK", "protect3f", "CurtisVorley", "alchemental", "dustinos", "R0land1199", "shelbyt2392", "johnstonbl01", "monkeydelaney", "dstrawyer28", "remaat", "Fuzzwah", "cocoluva3", "jocelyn_kerbourch", "Fabimier",  "raenerl", "derekduff", "Two Robots", "Shekinah", "beardgoggles3000", "cmr6117", "Scottyos", "trentellingsen", "mineral2", "conzar", "majohnny", "ChaosMoss", "MaxBodelier", "june881019", "Meeple", "lsteinwi", "hojoos", "Djoyner", "funhillgames", "KonradMikula", "EmilyWan", "tyclone", "de-games", "NaughtRobot", "flingram", "BradansWorld2015", "David Lancashire", "bearguy", "SandoSaito", "sunshinesan", "laian", "philryuh", "nathbot", "Wis", "Robertcompton", "Jcagno", "artome", "aganerral", "1nf1n1ty", "MogMadness", "tallon.simmons", "petersch", "elfosardo", "ThatJimGuy", "joidan", "MixedCompanyGames", "Nicole"]
 
 def get_lists(username)
-  res = RestClient.get("https://www.boardgameatlas.com/api/lists?username=#{username}&pretty=true&client_id=#{Rails.application.credentials.dig(:bga_api_key)}")
-  results = JSON.parse(res)
-  results['lists']
+  begin
+    retries ||= 0
+    res = RestClient.get("https://www.boardgameatlas.com/api/lists?username=#{username}&pretty=true&client_id=#{Rails.application.credentials.dig(:bga_api_key)}")
+    results = JSON.parse(res)
+    return results['lists']
+  rescue SocketError => e
+    puts e
+    sleep 60
+    retry if (retries += 1 < 3)
+  end
 end
 
 def get_games_from_list(list)
@@ -92,26 +99,50 @@ def get_games_from_list(list)
   results['games']
 end
 
+def find_or_create_game(g)
+  game = Game.find_by(bga_id: g['id'])
+  unless game
+    mechanic_ids = get_mechanics(g)
+    game = Game.create(
+      name: g['name'],
+      min_players: g['min_players'],
+      max_players: g['max_players'],
+      min_playtime: g['min_playtime'],
+      max_playtime: g['max_playtime'],
+      description: g['description'],
+      image_url: g['image_url'],
+      bga_id: g['id'],
+      mechanic_ids: mechanic_ids
+    )
+  end
+  game
+end
+
+def get_mechanics(game)
+  mechanic_ids = []
+  game['mechanics'].each do |m|
+    mechanic = Mechanic.find_by(bga_id: m['id'])
+    mechanic_ids << mechanic['id']
+  end
+  mechanic_ids
+end
+
 def generate_user(username)
   lists = get_lists(username)
   unless lists.length == 0
-    user = User.create(username: username)
+    user = User.create(username: username, password: 'password')
     lists.each do |l|
       games = get_games_from_list(l)
       games.each do |g|
-        game = Game.where(
-          bga_id: game_params[:bga_id]
-        ).first_or_create(
-          name: game['name'],
-          min_players: game['min_players'],
-          max_players: game['max_players'],
-          min_playtime: game['min_playtime'],
-          max_playtime: game['max_playtime'],
-          description: game['description'],
-          image_url: game['image_url'],
-          bga_id: game['id']
-        )
+        game = find_or_create_game(g)
+        begin
+          user.games << game
+        rescue => ex
+          puts ex
+        end
       end
     end
   end
 end
+
+generate_user(usernames[0])
