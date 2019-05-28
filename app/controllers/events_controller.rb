@@ -4,6 +4,11 @@ class EventsController < ApplicationController
     render json: current_user.events
   end
 
+  def show
+    event = Event.find(params[:id])
+    render json: event
+  end
+
   def create
     event = Event.create(event_params)
     if event.valid?
