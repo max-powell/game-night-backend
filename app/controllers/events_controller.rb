@@ -1,15 +1,14 @@
 class EventsController < ApplicationController
 
   def index
-    events = current_user.events.reject{|e| Time.parse(e.date_time) < Time.now }.sort{|a, b| Time.parse(a.date_time) <=> Time.parse(b.date_time)}
-    render json: events
+    render json: current_user.events
   end
 
   def create
     event = Event.create(event_params)
     if event.valid?
       event.host = current_user
-      render json: event
+      render json: ActiveModelSerializers::SerializableResource.new(event, {serializer: InviteEventSummarySerializer}).as_json
     else
       render json: {error: event.errors.full_messages}
     end
