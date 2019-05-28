@@ -2,7 +2,7 @@ class InviteEventSummarySerializer < ActiveModel::Serializer
   attributes :id, :date_time, :location, :host, :game
 
   def game
-    object.game.name
+    object.game ? object.game.name : 'TBD'
   end
 
   def host
