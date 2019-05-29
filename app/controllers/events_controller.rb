@@ -4,6 +4,11 @@ class EventsController < ApplicationController
     render json: current_user.events
   end
 
+  def show
+    event = Event.find(params[:id])
+    render json: event
+  end
+
   def create
     event = Event.create(event_params)
     if event.valid?
@@ -12,6 +17,22 @@ class EventsController < ApplicationController
     else
       render json: {error: event.errors.full_messages}
     end
+  end
+
+  def update
+    event = Event.find(params[:id])
+    event.update(event_params)
+    if event.valid?
+      render json: ActiveModelSerializers::SerializableResource.new(event, {serializer: InviteEventSummarySerializer}).as_json
+    else
+      render json: {error: event.errors.full_messages}
+    end
+  end
+
+  def leave
+    attendance = Attendance.find_by(event_id: params[:id], user_id: current_user.id)
+    attendance.destroy
+    render json: {message: 'Event cancelled'}
   end
 
   private
