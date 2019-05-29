@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :users, only: [:create, :update]
   resources :games, only: [:index, :create]
-  resources :events, only: [:index, :show, :create]
+  resources :events, only: [:index, :show, :create, :update]
   resources :friends, only: :index
   resources :friend_requests, except: [:show, :new, :edit]
   resources :event_invites, only: [:index, :create, :update, :destroy]
