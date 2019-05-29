@@ -20,9 +20,13 @@ class EventsController < ApplicationController
   end
 
   def update
-    event = event.find(params[:id])
+    event = Event.find(params[:id])
     event.update(event_params)
-    render json: ActiveModelSerializers::SerializableResource.new(event, {serializer: InviteEventSummarySerializer})
+    if event.valid?
+      render json: ActiveModelSerializers::SerializableResource.new(event, {serializer: InviteEventSummarySerializer}).as_json
+    else
+      render json: {error: event.errors.full_messages}
+    end
   end
 
   private

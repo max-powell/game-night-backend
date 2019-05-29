@@ -1,7 +1,7 @@
 class Event < ApplicationRecord
   validates :location, presence: true
   validates :date_time, presence: true
-  validates :invited_guest_ids, presence: true
+  validates :invited_guest_ids, presence: true, on: :create
 
   belongs_to :game, optional: true
 
