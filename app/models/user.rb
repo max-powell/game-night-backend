@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   has_secure_password
-  validates :username, presence: true, uniqueness: {case_sensitive: false}
+  validates :username, presence: true, uniqueness: {case_sensitive: false}, length: {maximum: 7}
 
   has_many :friendships, dependent: :destroy
   has_many :friends, through: :friendships
