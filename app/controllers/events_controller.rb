@@ -29,6 +29,12 @@ class EventsController < ApplicationController
     end
   end
 
+  def leave
+    attendance = Attendance.find_by(event_id: params[:id], user_id: current_user.id)
+    attendance.destroy
+    render json: {message: 'Event cancelled'}
+  end
+
   private
 
   def event_params
