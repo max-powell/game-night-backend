@@ -1,5 +1,3 @@
-require 'JSON'
-
 class GamesController < ApplicationController
 
   def index
