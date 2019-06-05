@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   resources :friend_requests, except: [:show, :new, :edit]
   resources :event_invites, only: [:index, :create, :update, :destroy]
 
+  root 'welcome#index'
+
   post '/login', to: 'auth#create'
   get '/profile', to: 'users#profile'
 
