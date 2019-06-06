@@ -2,7 +2,7 @@
 
 A web app for friends to connect and plan board game nights so they can spend less time planning and more time playing.
 
-The app is live at [https://gamenight-final-project.herokuapp.com/].
+The app is live at https://gamenight-final-project.herokuapp.com/.
 
 *NB This is the Rails backend for the project. You can find the repo for the frontend [here](https://github.com/max-powell/game-night-frontend).*
 
